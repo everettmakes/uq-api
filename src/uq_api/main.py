@@ -1,11 +1,13 @@
+import os
 from contextlib import asynccontextmanager
 
 import numpy as np
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
+from pymongo import MongoClient
 
 from uq_api.model import GPSurrogate
-from uq_api.repository import InMemoryRunRepository
+from uq_api.repository import InMemoryRunRepository, MongoRunRepository, RunRepository
 from uq_api.service import PredictionService
 
 
@@ -21,19 +23,29 @@ class PredictResponse(BaseModel):
 
 
 # --- Build the service once, when the app starts ---
-def build_service() -> PredictionService:
+def build_service(repo: RunRepository) -> PredictionService:
     X = np.array([0, 0.5, 1, 1.5, 3.5, 4, 4.5, 5]).reshape(-1, 1)
     rng = np.random.default_rng(seed=0)
     y = np.sin(X).ravel() + rng.normal(0, 0.1, size=len(X))
     model = GPSurrogate()
     model.fit(X, y)
-    return PredictionService(model=model, repo=InMemoryRunRepository())
+    return PredictionService(model=model, repo=repo)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    app.state.service = build_service()   # runs at startup
-    yield                                 # app serves requests here
+    mongo_url = os.getenv("MONGO_URL")
+    client = None
+    if mongo_url:
+        client = MongoClient(mongo_url)
+        repo = MongoRunRepository(client["uq"]["runs"])
+    else:
+        repo = InMemoryRunRepository()
+
+    app.state.service = build_service(repo)
+    yield
+    if client is not None:
+        client.close()                             # app serves requests here
 
 
 app = FastAPI(title="uq-api", lifespan=lifespan)
