@@ -3,6 +3,8 @@
 
 A containerised REST API that returns predictions **with uncertainty**, using a Gaussian process surrogate model.
 
+![uq-api UI showing the GP mean, uncertainty band and a prediction](docs/screenshot.png)
+
 Every prediction comes back as a mean and a standard deviation, and every run is stored in MongoDB so it can be retrieved later.
 
 ```json
