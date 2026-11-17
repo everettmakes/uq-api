@@ -1,0 +1,10 @@
+.app { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+.subtitle { color: #555; margin-top: -0.5rem; }
+.controls { display: flex; gap: 0.5rem; align-items: center; margin: 1rem 0; }
+.controls input { width: 6rem; padding: 0.4rem; font-size: 1rem; }
+.controls button { padding: 0.45rem 1rem; font-size: 1rem; cursor: pointer; }
+.result { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 1rem; }
+.result dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 1rem; margin: 0; }
+.result dt { color: #555; }
+.result dd { margin: 0; font-family: ui-monospace, monospace; }
+.error { color: #c0392b; }
