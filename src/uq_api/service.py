@@ -20,3 +20,7 @@ class PredictionService:
 
     def get_run(self, run_id: str) -> dict | None:
         return self.repo.get(run_id)
+
+    def preview(self, X: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+        """Predict without recording a run (used for plotting the curve)."""
+        return self.model.predict(X)

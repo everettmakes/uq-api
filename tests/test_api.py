@@ -6,7 +6,7 @@ from uq_api.main import app
 
 @pytest.fixture
 def client():
-    with TestClient(app) as c:      # "with" runs the lifespan, so the model gets trained
+    with TestClient(app) as c:  # "with" runs the lifespan, so the model gets trained
         yield c
 
 
@@ -39,3 +39,16 @@ def test_unknown_run_returns_404(client):
 def test_invalid_input_returns_422(client):
     r = client.post("/predict", json={"x": "not a list"})
     assert r.status_code == 422
+
+
+def test_curve_returns_grid_and_training_data(client):
+    r = client.get("/curve", params={"n": 50})
+    assert r.status_code == 200
+    body = r.json()
+    assert len(body["grid"]) == len(body["mean"]) == len(body["std"]) == 50
+    assert len(body["train_x"]) == len(body["train_y"]) == 8
+
+
+def test_curve_rejects_bad_range(client):
+    r = client.get("/curve", params={"x_min": 5, "x_max": 1})
+    assert r.status_code == 400

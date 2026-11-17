@@ -8,15 +8,19 @@ from pymongo import MongoClient
 from uq_api.repository import MongoRunRepository
 
 MONGO_URL = os.getenv("MONGO_URL")
-pytestmark = pytest.mark.skipif(MONGO_URL is None, reason="needs MongoDB (set MONGO_URL)")
+pytestmark = pytest.mark.skipif(
+    MONGO_URL is None, reason="needs MongoDB (set MONGO_URL)"
+)
 
 
 @pytest.fixture
 def repo():
     client = MongoClient(MONGO_URL)
-    collection = client["uq_test"][f"runs_{uuid.uuid4().hex}"]   # fresh collection per test
+    collection = client["uq_test"][
+        f"runs_{uuid.uuid4().hex}"
+    ]  # fresh collection per test
     yield MongoRunRepository(collection)
-    collection.drop()                                           # clean up afterwards
+    collection.drop()  # clean up afterwards
     client.close()
 
 
