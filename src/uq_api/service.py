@@ -17,3 +17,6 @@ class PredictionService:
             "mean": mean.tolist(),
             "std": std.tolist(),
         }
+
+    def get_run(self, run_id: str) -> dict | None:
+        return self.repo.get(run_id)
