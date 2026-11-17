@@ -1,7 +1,7 @@
 [project]
 name = "uq-api"
 version = "0.1.0"
-description = "Add your description here"
+description = "A containerised REST API that returns Gaussian process predictions with uncertainty."
 readme = "README.md"
 authors = [
     { name = "everettmakes", email = "jeverer@gmail.com" }
@@ -14,9 +14,6 @@ dependencies = [
     "scikit-learn>=1.9.1",
     "uvicorn>=0.54.0",
 ]
-
-[project.scripts]
-uq-api = "uq_api:main"
 
 [build-system]
 requires = ["uv_build>=0.12.24,<0.13.0"]

@@ -111,7 +111,7 @@ The suite follows the testing pyramid. Each level isolates a different layer.
         E2E          7   full HTTP round trips via TestClient
      Integration     2   MongoRunRepository against a real database
       Component      4   PredictionService with fake model and repository
-        Unit         4   GPSurrogate on its own
+        Unit         6   GPSurrogate on its own, including a calibration check
 
   + Performance      3   latency and training-time budgets (pytest -m perf)
   + Load                 Locust, against the full Docker stack
@@ -120,6 +120,7 @@ The suite follows the testing pyramid. Each level isolates a different layer.
 | File | Level | What it checks |
 |---|---|---|
 | `test_model.py` | Unit | Output shapes, non-negative std, **std grows away from data**, fit to training points |
+| `test_calibration.py` | Unit | At x = 6.0, beyond the training data, the prediction is off by more than 0.3 but the true value still falls inside ±2 std |
 | `test_service.py` | Component | Service passes model output through, saves every run, returns the repository's ID, `preview` saves nothing |
 | `test_mongo_repository.py` | Integration | Save/get round trip and missing IDs against real MongoDB |
 | `test_api.py` | End-to-end | Health check, prediction, storage round trip, `/curve`, `400`/`404`/`422` handling |
@@ -198,10 +199,11 @@ uq-api/
 │   ├── test_service.py
 │   ├── test_mongo_repository.py
 │   ├── test_api.py
+│   ├── test_calibration.py
 │   └── test_performance.py
 ├── ui/                  React + TypeScript frontend (Vite, Recharts)
 ├── docs/                screenshot
-├── .github/workflows/   CI: lint, tests, Docker build, frontend build
+├── .github/workflows/   CI: lint, tests, Docker build
 ├── locustfile.py        load test
 ├── Dockerfile
 ├── compose.yaml
