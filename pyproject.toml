@@ -9,7 +9,6 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "fastapi>=0.163.1",
-    "matplotlib>=3.11.2",
     "numpy>=2.5.5",
     "pymongo>=4.20.0",
     "scikit-learn>=1.9.1",
@@ -26,6 +25,7 @@ build-backend = "uv_build"
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
+    "matplotlib>=3.11.2",
     "pytest>=9.2.0",
 ]
 

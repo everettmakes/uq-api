@@ -979,7 +979,6 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
-    { name = "matplotlib" },
     { name = "numpy" },
     { name = "pymongo" },
     { name = "scikit-learn" },
@@ -989,13 +988,13 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "httpx" },
+    { name = "matplotlib" },
     { name = "pytest" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.163.1" },
-    { name = "matplotlib", specifier = ">=3.11.2" },
     { name = "numpy", specifier = ">=2.5.5" },
     { name = "pymongo", specifier = ">=4.20.0" },
     { name = "scikit-learn", specifier = ">=1.9.1" },
@@ -1005,6 +1004,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "matplotlib", specifier = ">=3.11.2" },
     { name = "pytest", specifier = ">=9.2.0" },
 ]
 
